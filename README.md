@@ -32,7 +32,7 @@ npm i
 # 2) Copy env
 cp .env.example .env
 
-# 3) Start Mongo locally or point MONGODB_URI to Atlas
+# 3) MongoDB is enabled via Atlas
 
 # 4) Run
 npm run dev   # or: npm start
