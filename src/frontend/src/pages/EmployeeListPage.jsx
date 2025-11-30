@@ -96,7 +96,7 @@ export default function EmployeeListPage() {
       {error && <div className="alert alert-danger">{error}</div>}
 
       <div className="table-responsive">
-        <table className="table table-striped align-middle">
+        <table className="table table-striped align-middle employee-table">
           <thead>
             <tr>
               <th>Profile</th>

@@ -54,13 +54,9 @@ export default function EmployeeFormPage({ mode }) {
       if (file) formData.append("profile_picture", file);
 
       if (isEdit) {
-        await api.put(`/emp/employees/${id}`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        await api.put(`/emp/employees/${id}`, formData);
       } else {
-        await api.post("/emp/employees", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        await api.post("/emp/employees", formData);
       }
       navigate("/employees");
     } catch (err) {

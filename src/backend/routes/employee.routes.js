@@ -5,7 +5,6 @@ import {
   getEmployeeById,
   updateEmployeeById,
   deleteEmployeeByQuery,
-  searchEmployees,
 } from "../controllers/employee.controller.js";
 import {
   validateEmployeeCreate,
@@ -18,14 +17,9 @@ import { uploadProfilePic } from "../middleware/upload.js";
 
 const router = Router();
 
-// list all
 router.get("/employees", optionalAuth, listEmployees);
 
-// NEW: search by department/position
-router.get("/employees/search", optionalAuth, searchEmployees);
-
-// create with optional profile picture
-router.post(
+  router.post(
   "/employees",
   optionalAuth,
   uploadProfilePic,
@@ -33,7 +27,6 @@ router.post(
   createEmployee
 );
 
-// get by id
 router.get(
   "/employees/:eid",
   optionalAuth,
@@ -41,7 +34,6 @@ router.get(
   getEmployeeById
 );
 
-// update with optional profile picture
 router.put(
   "/employees/:eid",
   optionalAuth,
@@ -50,7 +42,6 @@ router.put(
   updateEmployeeById
 );
 
-// delete by eid query
 router.delete(
   "/employees",
   optionalAuth,

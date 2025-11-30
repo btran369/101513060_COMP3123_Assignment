@@ -26,5 +26,5 @@ function fileFilter(_req, file, cb) {
 export const uploadProfilePic = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
 }).single("profile_picture");

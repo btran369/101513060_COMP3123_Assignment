@@ -37,8 +37,8 @@ export async function createEmployee(req, res) {
     const data = { ...req.body };
 
     if (req.file) {
-      data.profile_picture_url = `/uploads/${req.file.filename}`;
-    }
+      const baseUrl = `${req.protocol}://${req.get("host")}`;
+      data.profile_picture_url = `${baseUrl}/uploads/${req.file.filename}`;    }
 
     const emp = await Employee.create(data);
     return res.status(201).json(formatEmployee(emp));
@@ -71,7 +71,8 @@ export async function updateEmployeeById(req, res) {
     const data = { ...req.body };
 
     if (req.file) {
-      data.profile_picture_url = `/uploads/${req.file.filename}`;
+      const baseUrl = `${req.protocol}://${req.get("host")}`;
+      data.profile_picture_url = `${baseUrl}/uploads/${req.file.filename}`;  
     }
 
     const emp = await Employee.findByIdAndUpdate(eid, data, {

@@ -13,7 +13,9 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(helmet());
+app.use(  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  }));
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
