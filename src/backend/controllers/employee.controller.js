@@ -1,6 +1,7 @@
 import Employee from "../models/Employee.js";
 import { formatEmployee } from "../utils/format.js";
 
+// GET /api/v1/emp/employees?department=&position=
 export async function listEmployees(req, res) {
   try {
     const { department, position } = req.query;
@@ -8,12 +9,10 @@ export async function listEmployees(req, res) {
     const filter = {};
 
     if (department && department.trim() !== "") {
-      // case-insensitive partial match on department
       filter.department = new RegExp(department.trim(), "i");
     }
 
     if (position && position.trim() !== "") {
-      // case-insensitive partial match on position
       filter.position = new RegExp(position.trim(), "i");
     }
 
@@ -25,45 +24,33 @@ export async function listEmployees(req, res) {
   }
 }
 
-
-
-// GET /employees/search?department=...&position=...
-
-export async function searchEmployees(req, res) {
-  try {
-    const { department, position } = req.query;
-    const filter = {};
-
-    if (department) filter.department = department;
-    if (position) filter.position = position;
-
-    const emps = await Employee.find(filter).sort({ created_at: -1 });
-    const payload = emps.map(formatEmployee);
-    return res.status(200).json(payload);
-  } catch (err) {
-    return res.status(500).json({ status: false, message: err.message });
-  }
-}
-
-// POST /employees
-// body: JSON + optional file (handled by multer)
-
+// POST /api/v1/emp/employees  (multipart/form-data)
 export async function createEmployee(req, res) {
   try {
     const data = { ...req.body };
 
     if (req.file) {
       const baseUrl = `${req.protocol}://${req.get("host")}`;
-      data.profile_picture_url = `${baseUrl}/uploads/${req.file.filename}`;    }
+      data.profile_picture_url = `${baseUrl}/uploads/${req.file.filename}`;
+    }
 
     const emp = await Employee.create(data);
-    return res.status(201).json(formatEmployee(emp));
+
+    return res.status(201).json({
+      message: "Employee created successfully.",
+      employee: formatEmployee(emp),
+    });
   } catch (err) {
+    if (err?.code === 11000) {
+      return res
+        .status(409)
+        .json({ status: false, message: "Employee email already exists" });
+    }
     return res.status(500).json({ status: false, message: err.message });
   }
 }
 
-//GET /employees/:eid
+// GET /api/v1/emp/employees/:eid
 export async function getEmployeeById(req, res) {
   try {
     const { eid } = req.params;
@@ -79,8 +66,7 @@ export async function getEmployeeById(req, res) {
   }
 }
 
-// PUT /employees/:eid
-
+// PUT /api/v1/emp/employees/:eid  (multipart/form-data)
 export async function updateEmployeeById(req, res) {
   try {
     const { eid } = req.params;
@@ -88,7 +74,7 @@ export async function updateEmployeeById(req, res) {
 
     if (req.file) {
       const baseUrl = `${req.protocol}://${req.get("host")}`;
-      data.profile_picture_url = `${baseUrl}/uploads/${req.file.filename}`;  
+      data.profile_picture_url = `${baseUrl}/uploads/${req.file.filename}`;
     }
 
     const emp = await Employee.findByIdAndUpdate(eid, data, {
@@ -102,13 +88,16 @@ export async function updateEmployeeById(req, res) {
         .json({ status: false, message: "Employee not found" });
     }
 
-    return res.status(200).json(formatEmployee(emp));
+    return res.status(200).json({
+      message: "Employee details updated successfully.",
+      employee: formatEmployee(emp),
+    });
   } catch (err) {
     return res.status(500).json({ status: false, message: err.message });
   }
 }
 
-// Delete: /employees?eid=...
+// DELETE /api/v1/emp/employees?eid=...
 export async function deleteEmployeeByQuery(req, res) {
   try {
     const { eid } = req.query;

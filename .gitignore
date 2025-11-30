@@ -15,3 +15,5 @@ pnpm-debug.log*
 coverage/
 # prod
 dist/
+# local
+src/backend/uploads/
