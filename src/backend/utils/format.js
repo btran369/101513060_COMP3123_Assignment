@@ -21,5 +21,6 @@ export function formatEmployee(emp) {
     salary: emp.salary,
     date_of_joining: emp.date_of_joining,
     department: emp.department,
+    profile_picture_url: emp.profile_picture_url || null,
   };
 }

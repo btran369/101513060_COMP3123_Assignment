@@ -48,6 +48,18 @@ export const validateDeleteEmployee = [
   handleValidation,
 ];
 
+export const validateEmployeeSearch = [
+  query("department").optional().isString().trim(),
+  query("position").optional().isString().trim(),
+  query().custom(value => {
+    if (!value.department && !value.position) {
+      throw new Error("Provide department or position for search");
+    }
+    return true;
+  }),
+  handleValidation,
+];
+
 function isObjectId(v) {
   return mongoose.Types.ObjectId.isValid(v);
 }

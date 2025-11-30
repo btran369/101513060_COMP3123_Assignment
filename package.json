@@ -5,15 +5,17 @@
   "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/server.js",
-    "start": "node src/server.js",
+    "dev": "nodemon src/backend/server.js",
+    "start": "node src/backend/server.js",
     "lint": "echo \"(add eslint if desired)\""
   },
   "keywords": [],
   "author": "101513060",
   "license": "MIT",
   "dependencies": {
+    "axios": "^1.13.2",
     "bcryptjs": "^2.4.3",
+    "bootstrap": "^5.3.8",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
@@ -21,7 +23,9 @@
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.6.3",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "multer": "^2.0.2",
+    "react-router-dom": "^7.9.6"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"
