@@ -32,7 +32,7 @@ export default function LoginPage() {
 
   return (
     <div className="container mt-4" style={{ maxWidth: 400 }}>
-      <h2 className="mb-3">Login</h2>
+      <h2 className="page-title">Login</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">Email or Username</label>

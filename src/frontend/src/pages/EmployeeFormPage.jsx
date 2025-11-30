@@ -70,7 +70,7 @@ export default function EmployeeFormPage({ mode }) {
 
   return (
     <div className="container mt-4" style={{ maxWidth: 600 }}>
-      <h2 className="mb-3">
+      <h2 className="page-title">
         {isEdit ? "Edit Employee" : "Add Employee"}
       </h2>
       <form onSubmit={handleSubmit}>

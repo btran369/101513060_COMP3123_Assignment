@@ -1,12 +1,15 @@
 {
   "name": "comp3123-assignment1",
   "version": "1.0.0",
-  "description": "COMP 3123 Assignment 1 - Backend (Node.js, Express, MongoDB)",
-  "main": "src/server.js",
+  "description": "COMP 3123 Assignment 2 - Backend & Frontend",
+  "main": "backend/server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/backend/server.js",
-    "start": "node src/backend/server.js",
+    "dev:backend": "nodemon src/backend/server.js",
+    "start:backend": "node src/backend/server.js",
+    "start:frontend": "cd src/frontend && npm start",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run start:frontend\"",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
     "lint": "echo \"(add eslint if desired)\""
   },
   "keywords": [],
@@ -24,10 +27,10 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.6.3",
     "morgan": "^1.10.0",
-    "multer": "^2.0.2",
-    "react-router-dom": "^7.9.6"
+    "multer": "^2.0.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "concurrently": "^9.0.0"
   }
 }

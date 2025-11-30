@@ -11,37 +11,27 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="navbar navbar-expand navbar-dark bg-dark">
-      <div className="container-fluid">
-        <Link className="navbar-brand" to="/employees">
-          Employee Portal
-        </Link>
-        <div className="navbar-nav ms-auto">
-          {!isAuthenticated && (
-            <>
-              <Link className="nav-link" to="/login">
-                Login
-              </Link>
-              <Link className="nav-link" to="/signup">
-                Signup
-              </Link>
-            </>
-          )}
-          {isAuthenticated && (
-            <>
-              <Link className="nav-link" to="/employees">
-                Employees
-              </Link>
-              <button
-                className="btn btn-sm btn-outline-light ms-2"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-    </nav>
+    <nav className="navbar-custom">
+  <div>
+    <Link to="/employees">Employee Portal</Link>
+  </div>
+
+  <div>
+    {!isAuthenticated && (
+      <>
+        <Link to="/login">Login</Link>
+        <Link to="/signup">Signup</Link>
+      </>
+    )}
+
+    {isAuthenticated && (
+      <>
+        <Link to="/employees">Employees</Link>
+        <button onClick={handleLogout} className="btn-outline">Logout</button>
+      </>
+    )}
+  </div>
+</nav>
+
   );
 }

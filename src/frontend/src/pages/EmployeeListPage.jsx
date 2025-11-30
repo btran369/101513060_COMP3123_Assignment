@@ -51,8 +51,8 @@ export default function EmployeeListPage() {
 
   return (
     <div className="container mt-4">
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h2>Employees</h2>
+      <div className="container">
+        <h2 className="page-title">Employees</h2>
         <Link to="/employees/new" className="btn btn-primary">
           Add Employee
         </Link>
