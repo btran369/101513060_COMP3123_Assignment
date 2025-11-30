@@ -3,7 +3,11 @@ import { createContext, useContext, useState, useEffect } from "react";
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(null);
+    const [token, setToken] = useState(() => {
+    // this runs once, *before* the first render
+    if (typeof window === "undefined") return null;
+    return localStorage.getItem("token");
+  });
 
   useEffect(() => {
     const stored = localStorage.getItem("token");
