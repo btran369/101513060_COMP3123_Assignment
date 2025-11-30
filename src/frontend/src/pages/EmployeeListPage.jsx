@@ -22,22 +22,16 @@ export default function EmployeeListPage() {
     fetchEmployees();
   }, []);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    const params = {};
-    if (department) params.department = department;
-    if (position) params.position = position;
+const handleSearch = (e) => {
+  e.preventDefault();
 
-    // use search endpoint if any filter is applied
-    if (department || position) {
-      api
-        .get("/emp/employees/search", { params })
-        .then((res) => setEmployees(res.data))
-        .catch(() => setError("Search failed"));
-    } else {
-      fetchEmployees();
-    }
-  };
+  const params = {};
+  if (department.trim()) params.department = department.trim();
+  if (position.trim()) params.position = position.trim();
+
+  // just reuse the main list endpoint with query params
+  fetchEmployees(params);
+};
 
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this employee?")) return;
