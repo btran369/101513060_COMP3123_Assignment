@@ -1,13 +1,22 @@
 import multer from "multer";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Resolve uploads folder path
+const uploadsDir = path.join(__dirname, "..", "uploads");
+
+// Make sure the uploads folder exists (both locally & on Heroku)
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
 const storage = multer.diskStorage({
   destination: function (_req, _file, cb) {
-    cb(null, path.join(__dirname, "..", "uploads"));
+    cb(null, uploadsDir);
   },
   filename: function (_req, file, cb) {
     const ext = path.extname(file.originalname);
