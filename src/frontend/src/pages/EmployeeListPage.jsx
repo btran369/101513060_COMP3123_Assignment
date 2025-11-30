@@ -8,19 +8,15 @@ export default function EmployeeListPage() {
   const [position, setPosition] = useState("");
   const [error, setError] = useState("");
 
-  const fetchEmployees = async (params = {}) => {
-    try {
-      setError("");
-      const res = await api.get("/emp/employees", { params });
-      setEmployees(res.data);
-    } catch (err) {
-      setError("Failed to load employees");
-    }
-  };
-
-  useEffect(() => {
-    fetchEmployees();
-  }, []);
+const fetchEmployees = async (params = {}) => {
+  try {
+    setError("");
+    const res = await api.get("/emp/employees", { params });
+    setEmployees(res.data);
+  } catch (err) {
+    setError("Failed to load employees");
+  }
+};
 
 const handleSearch = (e) => {
   e.preventDefault();
@@ -29,7 +25,6 @@ const handleSearch = (e) => {
   if (department.trim()) params.department = department.trim();
   if (position.trim()) params.position = position.trim();
 
-  // just reuse the main list endpoint with query params
   fetchEmployees(params);
 };
 

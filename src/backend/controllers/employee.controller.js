@@ -3,13 +3,29 @@ import { formatEmployee } from "../utils/format.js";
 
 export async function listEmployees(req, res) {
   try {
-    const emps = await Employee.find().sort({ created_at: -1 });
+    const { department, position } = req.query;
+
+    const filter = {};
+
+    if (department && department.trim() !== "") {
+      // case-insensitive partial match
+      filter.department = new RegExp(department.trim(), "i");
+    }
+
+    if (position && position.trim() !== "") {
+      // case-insensitive partial match
+      filter.position = new RegExp(position.trim(), "i");
+    }
+
+    const emps = await Employee.find(filter).sort({ created_at: -1 });
     const payload = emps.map(formatEmployee);
+
     return res.status(200).json(payload);
   } catch (err) {
     return res.status(500).json({ status: false, message: err.message });
   }
 }
+
 
 // GET /employees/search?department=...&position=...
 
