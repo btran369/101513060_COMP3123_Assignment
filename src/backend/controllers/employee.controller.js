@@ -8,23 +8,23 @@ export async function listEmployees(req, res) {
     const filter = {};
 
     if (department && department.trim() !== "") {
-      // case-insensitive partial match
+      // case-insensitive partial match on department
       filter.department = new RegExp(department.trim(), "i");
     }
 
     if (position && position.trim() !== "") {
-      // case-insensitive partial match
+      // case-insensitive partial match on position
       filter.position = new RegExp(position.trim(), "i");
     }
 
     const emps = await Employee.find(filter).sort({ created_at: -1 });
     const payload = emps.map(formatEmployee);
-
     return res.status(200).json(payload);
   } catch (err) {
     return res.status(500).json({ status: false, message: err.message });
   }
 }
+
 
 
 // GET /employees/search?department=...&position=...

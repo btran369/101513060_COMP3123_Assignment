@@ -8,6 +8,7 @@ export default function EmployeeListPage() {
   const [position, setPosition] = useState("");
   const [error, setError] = useState("");
 
+// fetch all or filtered
 const fetchEmployees = async (params = {}) => {
   try {
     setError("");
@@ -18,15 +19,18 @@ const fetchEmployees = async (params = {}) => {
   }
 };
 
+useEffect(() => {
+  fetchEmployees();        // no params -> full list
+}, []);
+
 const handleSearch = (e) => {
   e.preventDefault();
-
   const params = {};
   if (department.trim()) params.department = department.trim();
   if (position.trim()) params.position = position.trim();
-
-  fetchEmployees(params);
+  fetchEmployees(params);  // filtered list
 };
+
 
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this employee?")) return;
