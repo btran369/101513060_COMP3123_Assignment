@@ -16,6 +16,25 @@ export async function listEmployees(req, res) {
       filter.position = new RegExp(position.trim(), "i");
     }
 
+    // name can match first_name OR last_name (case-insensitive, partial)
+    if (name && name.trim() !== "") {
+      const regex = new RegExp(name.trim(), "i");
+
+      // combine previous filter with OR on names
+      // simplest: use $and + $or if filter already has fields
+      if (Object.keys(filter).length > 0) {
+        filter.$and = [
+          { ...filter },
+          { $or: [{ first_name: regex }, { last_name: regex }] },
+        ];
+        // remove duplicated top-level keys now inside $and[0]
+        delete filter.department;
+        delete filter.position;
+      } else {
+        filter.$or = [{ first_name: regex }, { last_name: regex }];
+      }
+    }
+
     const emps = await Employee.find(filter).sort({ created_at: -1 });
     const payload = emps.map(formatEmployee);
     return res.status(200).json(payload);

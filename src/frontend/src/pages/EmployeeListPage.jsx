@@ -5,6 +5,7 @@ import api from "../api/axiosClient";
 export default function EmployeeListPage() {
   const [employees, setEmployees] = useState([]);
   const [department, setDepartment] = useState("");
+  const [name, setName] = useState("");
   const [position, setPosition] = useState("");
   const [error, setError] = useState("");
 
@@ -25,11 +26,15 @@ useEffect(() => {
 
 const handleSearch = (e) => {
   e.preventDefault();
+
   const params = {};
+  if (name.trim()) params.name = name.trim();
   if (department.trim()) params.department = department.trim();
   if (position.trim()) params.position = position.trim();
-  fetchEmployees(params);  // filtered list
+
+  fetchEmployees(params);
 };
+
 
 
   const handleDelete = async (id) => {
@@ -51,40 +56,53 @@ const handleSearch = (e) => {
         </Link>
       </div>
 
-      <form className="row g-2 mb-3" onSubmit={handleSearch}>
-        <div className="col-md-4">
-          <input
-            className="form-control"
-            placeholder="Department"
-            value={department}
-            onChange={(e) => setDepartment(e.target.value)}
-          />
-        </div>
-        <div className="col-md-4">
-          <input
-            className="form-control"
-            placeholder="Position"
-            value={position}
-            onChange={(e) => setPosition(e.target.value)}
-          />
-        </div>
-        <div className="col-md-4 d-flex">
-          <button className="btn btn-outline-primary me-2" type="submit">
-            Search
-          </button>
-          <button
-            className="btn btn-outline-secondary"
-            type="button"
-            onClick={() => {
-              setDepartment("");
-              setPosition("");
-              fetchEmployees();
-            }}
-          >
-            Clear
-          </button>
-        </div>
-      </form>
+<form className="row g-2 mb-3" onSubmit={handleSearch}>
+  <div className="col-md-3">
+    <input
+      type="text"
+      className="form-control"
+      placeholder="Name"
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+    />
+  </div>
+  <div className="col-md-3">
+    <input
+      type="text"
+      className="form-control"
+      placeholder="Department"
+      value={department}
+      onChange={(e) => setDepartment(e.target.value)}
+    />
+  </div>
+  <div className="col-md-3">
+    <input
+      type="text"
+      className="form-control"
+      placeholder="Position"
+      value={position}
+      onChange={(e) => setPosition(e.target.value)}
+    />
+  </div>
+  <div className="col-md-3 d-flex gap-2">
+    <button type="submit" className="btn btn-primary flex-grow-1">
+      Search
+    </button>
+    <button
+      type="button"
+      className="btn btn-secondary"
+      onClick={() => {
+        setName("");
+        setDepartment("");
+        setPosition("");
+        fetchEmployees();
+      }}
+    >
+      Clear
+    </button>
+  </div>
+</form>
+
 
       {error && <div className="alert alert-danger">{error}</div>}
 
