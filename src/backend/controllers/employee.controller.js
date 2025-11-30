@@ -20,6 +20,7 @@ export async function listEmployees(req, res) {
     const payload = emps.map(formatEmployee);
     return res.status(200).json(payload);
   } catch (err) {
+    console.error("listEmployees error:", err);
     return res.status(500).json({ status: false, message: err.message });
   }
 }
@@ -29,6 +30,15 @@ export async function createEmployee(req, res) {
   try {
     const data = { ...req.body };
 
+    // coerce types from FormData (everything comes as string)
+    if (data.salary !== undefined && data.salary !== "") {
+      data.salary = Number(data.salary);
+    }
+    if (data.date_of_joining) {
+      // HTML date input sends YYYY-MM-DD
+      data.date_of_joining = new Date(data.date_of_joining);
+    }
+
     if (req.file) {
       const baseUrl = `${req.protocol}://${req.get("host")}`;
       data.profile_picture_url = `${baseUrl}/uploads/${req.file.filename}`;
@@ -37,15 +47,25 @@ export async function createEmployee(req, res) {
     const emp = await Employee.create(data);
 
     return res.status(201).json({
+      status: true,
       message: "Employee created successfully.",
       employee: formatEmployee(emp),
     });
   } catch (err) {
+    console.error("createEmployee error:", err);
+
     if (err?.code === 11000) {
       return res
         .status(409)
         .json({ status: false, message: "Employee email already exists" });
     }
+
+    if (err.name === "ValidationError") {
+      return res
+        .status(400)
+        .json({ status: false, message: err.message });
+    }
+
     return res.status(500).json({ status: false, message: err.message });
   }
 }
@@ -62,6 +82,7 @@ export async function getEmployeeById(req, res) {
     }
     return res.status(200).json(formatEmployee(emp));
   } catch (err) {
+    console.error("getEmployeeById error:", err);
     return res.status(500).json({ status: false, message: err.message });
   }
 }
@@ -71,6 +92,13 @@ export async function updateEmployeeById(req, res) {
   try {
     const { eid } = req.params;
     const data = { ...req.body };
+
+    if (data.salary !== undefined && data.salary !== "") {
+      data.salary = Number(data.salary);
+    }
+    if (data.date_of_joining) {
+      data.date_of_joining = new Date(data.date_of_joining);
+    }
 
     if (req.file) {
       const baseUrl = `${req.protocol}://${req.get("host")}`;
@@ -89,10 +117,18 @@ export async function updateEmployeeById(req, res) {
     }
 
     return res.status(200).json({
+      status: true,
       message: "Employee details updated successfully.",
       employee: formatEmployee(emp),
     });
   } catch (err) {
+    console.error("updateEmployeeById error:", err);
+
+    if (err.name === "ValidationError") {
+      return res
+        .status(400)
+        .json({ status: false, message: err.message });
+    }
     return res.status(500).json({ status: false, message: err.message });
   }
 }
@@ -104,6 +140,7 @@ export async function deleteEmployeeByQuery(req, res) {
     await Employee.findByIdAndDelete(eid);
     return res.status(204).send();
   } catch (err) {
+    console.error("deleteEmployeeByQuery error:", err);
     return res.status(500).json({ status: false, message: err.message });
   }
 }

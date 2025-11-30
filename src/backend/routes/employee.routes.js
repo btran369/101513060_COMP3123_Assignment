@@ -17,16 +17,19 @@ import { uploadProfilePic } from "../middleware/upload.js";
 
 const router = Router();
 
+// GET /api/v1/emp/employees
 router.get("/employees", optionalAuth, listEmployees);
 
-  router.post(
+// POST /api/v1/emp/employees
+router.post(
   "/employees",
   optionalAuth,
-  uploadProfilePic,
+  uploadProfilePic,       // parse multipart + file
   validateEmployeeCreate,
   createEmployee
 );
 
+// GET /api/v1/emp/employees/:eid
 router.get(
   "/employees/:eid",
   optionalAuth,
@@ -34,14 +37,16 @@ router.get(
   getEmployeeById
 );
 
+// PUT /api/v1/emp/employees/:eid
 router.put(
   "/employees/:eid",
   optionalAuth,
-  uploadProfilePic,
+  uploadProfilePic,       // parse multipart + file
   validateEmployeeUpdate,
   updateEmployeeById
 );
 
+// DELETE /api/v1/emp/employees?eid=...
 router.delete(
   "/employees",
   optionalAuth,
