@@ -17,3 +17,6 @@ coverage/
 dist/
 # local
 src/backend/uploads/
+backend.zip
+full_app_backend_and_frontend.zip
+src/frontend/frontend.zip
